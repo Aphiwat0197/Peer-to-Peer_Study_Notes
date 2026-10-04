@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Prompt } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 
 // 1. เปลี่ยนมาใช้ Font Prompt ที่มีความทันสมัย และอ่านง่าย เหมาะกับภาษาไทย
@@ -26,13 +27,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="container mx-auto h-16 px-4 flex items-center justify-between">
             <div className="text-2xl font-bold text-emerald-400">Note TCT</div>
             <nav className="hidden md:flex gap-6 text-sm font-medium text-slate-300">
-              <a href="#" className="hover:text-emerald-400 transition-colors">หน้าแรก</a>
-              <a href="#" className="hover:text-emerald-400 transition-colors">ชีทสรุป</a>
-              <a href="#" className="hover:text-emerald-400 transition-colors">หาติวเตอร์</a>
+              <a href="/" className="hover:text-emerald-400 transition-colors">หน้าแรก</a>
+              <a href="/dashboard/notes" className="hover:text-emerald-400 transition-colors">ชีทสรุป</a>
+              <a href="/dashboard/tutors" className="hover:text-emerald-400 transition-colors">หาติวเตอร์</a>
             </nav>
-            <button className="bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold px-4 py-2 rounded-xl transition-all">
+            <Link href="/login" className="bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold px-4 py-2 rounded-xl transition-all">
               เข้าสู่ระบบ
-            </button>
+            </Link>
           </div>
         </header>
 
