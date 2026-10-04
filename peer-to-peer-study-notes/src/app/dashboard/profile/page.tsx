@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { User, Mail, BookOpen, Award, Coins, ShieldCheck } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import EditProfileModal from "@/components/EditProfileModal";
@@ -84,9 +85,9 @@ export default async function ProfilePage() {
       <section className="glass-card p-6 md:p-8 text-center">
         <h2 className="text-xl font-bold text-white mb-2">สนใจเป็นติวเตอร์ไหม?</h2>
         <p className="text-slate-400 text-sm mb-6">เปิดโปรไฟล์ติวเตอร์เพื่อรับงานติวและสร้างรายได้พิเศษ</p>
-        <button className="bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold px-6 py-3 rounded-xl transition-all shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)]">
+        <Link href="/dashboard/tutors/apply" className="bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold px-6 py-3 rounded-xl transition-all shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)] inline-block">
           สมัครเป็นติวเตอร์
-        </button>
+        </Link>
       </section>
     </div>
   );

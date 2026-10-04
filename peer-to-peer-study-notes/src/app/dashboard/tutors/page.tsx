@@ -1,4 +1,5 @@
 import { Search, Star, Users, MapPin, ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 export default function TutorsPage() {
   return (
@@ -12,9 +13,9 @@ export default function TutorsPage() {
           </h1>
           <p className="text-slate-400 mt-1">ค้นหาติวเตอร์ที่เก่งในวิชาที่คุณต้องการ</p>
         </div>
-        <button className="bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold px-6 py-2.5 rounded-xl transition-all shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)] whitespace-nowrap">
+        <Link href="/dashboard/tutors/apply" className="bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold px-6 py-2.5 rounded-xl transition-all shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)] whitespace-nowrap text-center inline-block">
           สมัครเป็นติวเตอร์
-        </button>
+        </Link>
       </div>
 
       {/* Search */}
