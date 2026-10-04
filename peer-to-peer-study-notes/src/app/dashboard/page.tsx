@@ -1,33 +1,48 @@
 import { BookOpen, Star, Sparkles, TrendingUp, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { createClient } from "@/utils/supabase/server";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // ดึงข้อมูล Profile จริงจาก Database
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", user!.id)
+    .single();
+
+  const fullName = profile?.full_name || "ผู้ใช้งาน";
+  const credits = profile?.credits || 0;
+  const points = profile?.points || 0;
+
   return (
     <div className="flex flex-col gap-8 pb-20 md:pb-0">
       
-      {/* Welcome & Gamification Section (Proximity) */}
+      {/* Welcome & Gamification Section */}
       <section className="glass-card p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-white mb-2 flex items-center gap-2">
-            สวัสดี, Somchai! <Sparkles className="text-yellow-400 w-6 h-6" />
+            สวัสดี, {fullName}! <Sparkles className="text-yellow-400 w-6 h-6" />
           </h1>
           <p className="text-slate-400">มาเรียนรู้และแบ่งปันไปด้วยกันวันนี้</p>
         </div>
         
-        {/* Credits & Points Badges */}
+        {/* Credits & Points Badges (ดึงค่าจริงจาก DB) */}
         <div className="flex gap-4">
           <div className="bg-slate-800/80 px-4 py-3 rounded-2xl flex flex-col items-center min-w-[100px]">
             <span className="text-xs text-slate-400 mb-1">เครดิต</span>
-            <div className="text-xl font-bold text-emerald-400">125</div>
+            <div className="text-xl font-bold text-emerald-400">{credits}</div>
           </div>
           <div className="bg-slate-800/80 px-4 py-3 rounded-2xl flex flex-col items-center min-w-[100px]">
             <span className="text-xs text-slate-400 mb-1">แต้มสะสม</span>
-            <div className="text-xl font-bold text-sky-400">3,450</div>
+            <div className="text-xl font-bold text-sky-400">{points}</div>
           </div>
         </div>
       </section>
 
-      {/* Recent Notes (Visual Hierarchy & Grid) */}
+      {/* Recent Notes */}
       <section>
         <div className="flex justify-between items-end mb-4">
           <h2 className="text-xl font-bold text-white flex items-center gap-2">
@@ -66,7 +81,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      {/* Top Tutors (Repetition & Grid) */}
+      {/* Top Tutors */}
       <section>
         <div className="flex justify-between items-end mb-4 mt-4">
           <h2 className="text-xl font-bold text-white flex items-center gap-2">
@@ -84,15 +99,12 @@ export default function DashboardPage() {
           <TutorCard name="พี่เต๋อ" subject="โปรแกรมมิ่ง" rating="4.9" />
         </div>
       </section>
-
     </div>
   );
 }
 
 // --- Subcomponents ---
-
 function NoteCard({ title, subject, rating, author, price, color }: any) {
-  // Map color strings to Tailwind pastel classes
   const colorMap: Record<string, string> = {
     sky: "bg-sky-100 text-sky-700",
     emerald: "bg-emerald-100 text-emerald-700",
@@ -113,7 +125,7 @@ function NoteCard({ title, subject, rating, author, price, color }: any) {
       <h3 className="font-bold text-lg mb-4 line-clamp-2 leading-snug">{title}</h3>
       <div className="flex justify-between items-center border-t border-slate-100 pt-3 mt-auto">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-slate-200" />
+          <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500">{author.charAt(0)}</div>
           <span className="text-xs text-slate-500 font-medium">{author}</span>
         </div>
         <span className={`text-sm font-bold ${price === 'ฟรี' ? 'text-emerald-500' : 'text-slate-700'}`}>
