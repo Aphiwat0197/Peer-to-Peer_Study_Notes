@@ -25,7 +25,7 @@ export default function HomePage() {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-          <Link href="/dashboard" className="px-8 py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold text-lg transition-all shadow-[0_0_30px_-5px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2">
+          <Link href="/login" className="px-8 py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold text-lg transition-all shadow-[0_0_30px_-5px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2">
             เข้าสู่ระบบ / เริ่มต้นฟรี
             <ArrowRight className="w-5 h-5" />
           </Link>
