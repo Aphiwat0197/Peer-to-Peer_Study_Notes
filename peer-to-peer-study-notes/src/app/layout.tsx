@@ -41,12 +41,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <header className="sticky top-0 z-50 w-full border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-md">
           <div className="container mx-auto h-16 px-4 flex items-center justify-between">
             <Link href="/" className="text-2xl font-bold text-emerald-400">Note TCT</Link>
-            <nav className="hidden md:flex gap-6 text-sm font-medium text-slate-300">
-              <Link href="/" className="hover:text-emerald-400 transition-colors">หน้าแรก</Link>
-              <Link href="/dashboard/notes" className="hover:text-emerald-400 transition-colors">ชีทสรุป</Link>
-              <Link href="/dashboard/tutors" className="hover:text-emerald-400 transition-colors">หาติวเตอร์</Link>
-            </nav>
+            {/* Middle Menu: Show only when logged in */}
+            {user && (
+              <nav className="hidden md:flex gap-6 text-sm font-medium text-slate-300">
+                <Link href="/" className="hover:text-emerald-400 transition-colors">หน้าแรก</Link>
+                <Link href="/dashboard/notes" className="hover:text-emerald-400 transition-colors">ชีทสรุป</Link>
+                <Link href="/dashboard/tutors" className="hover:text-emerald-400 transition-colors">หาติวเตอร์</Link>
+              </nav>
+            )}
             
+            {/* Right Side: Profile or Login Button */}
             {user ? (
               <Link href="/dashboard/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                 <div className="hidden md:block text-sm text-right">
