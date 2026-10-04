@@ -17,5 +17,11 @@ export default async function ApplyTutorPage() {
     .eq("id", user.id)
     .single();
 
-  return <ApplyTutorClient userId={user.id} existingProfile={tutorProfile} />;
+  // ดึงรายการวิชาทั้งหมดจากฐานข้อมูล
+  const { data: subjects } = await supabase
+    .from("subjects")
+    .select("*")
+    .order("name");
+
+  return <ApplyTutorClient userId={user.id} existingProfile={tutorProfile} subjects={subjects || []} />;
 }

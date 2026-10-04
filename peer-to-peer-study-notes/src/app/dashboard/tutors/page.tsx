@@ -1,7 +1,22 @@
-import { Search, Star, Users, MapPin, ChevronRight } from "lucide-react";
+import { createClient } from "@/utils/supabase/server";
+import { Search, Star, Users, Clock, BookOpen, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-export default function TutorsPage() {
+export default async function TutorsPage() {
+  const supabase = await createClient();
+
+  // ดึงข้อมูลติวเตอร์ทั้งหมดจากฐานข้อมูล (join กับ profiles และ subjects)
+  const { data: tutors } = await supabase
+    .from("tutor_profiles")
+    .select("*, profiles(full_name)")
+    .order("created_at", { ascending: false });
+
+  // ดึงรายการวิชาทั้งหมด
+  const { data: subjects } = await supabase
+    .from("subjects")
+    .select("*")
+    .order("name");
+
   return (
     <div className="flex flex-col gap-6 pb-20 md:pb-0">
       {/* Header & Search */}
@@ -28,55 +43,88 @@ export default function TutorsPage() {
         />
       </div>
 
-      {/* Subject Pills */}
-      <div className="flex gap-2 overflow-x-auto pb-2">
-        <button className="px-4 py-1.5 rounded-full bg-pink-500/20 text-pink-400 font-medium whitespace-nowrap border border-pink-500/30">ทั้งหมด</button>
-        <button className="px-4 py-1.5 rounded-full glass-card text-slate-300 hover:text-white whitespace-nowrap">คณิตศาสตร์</button>
-        <button className="px-4 py-1.5 rounded-full glass-card text-slate-300 hover:text-white whitespace-nowrap">ฟิสิกส์</button>
-        <button className="px-4 py-1.5 rounded-full glass-card text-slate-300 hover:text-white whitespace-nowrap">ภาษาอังกฤษ</button>
-        <button className="px-4 py-1.5 rounded-full glass-card text-slate-300 hover:text-white whitespace-nowrap">โปรแกรมมิ่ง</button>
-      </div>
+      {/* Tutor Grid - Real Data */}
+      {tutors && tutors.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {tutors.map((tutor) => {
+            const name = (tutor.profiles as any)?.full_name || "ติวเตอร์";
+            const initial = name.charAt(0).toUpperCase();
+            const teachingSubjects = tutor.teaching_subjects || [];
+            const subjectNames = subjects?.filter(s => teachingSubjects.includes(s.id)).map(s => s.name) || [];
+            const availDays = tutor.available_days || [];
 
-      {/* Tutor Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <TutorDetailCard name="พี่เอก วิศวะ" subject="Calculus I, II" rating="5.0" reviews={48} price="30" bio="เกรด A ทุกตัว พร้อมสอนตั้งแต่พื้นฐาน" />
-        <TutorDetailCard name="พี่พลอย อักษร" subject="English, TOEIC" rating="4.9" reviews={32} price="25" bio="TOEIC 950 สอนสนุก เข้าใจง่าย" />
-        <TutorDetailCard name="พี่เคน วิทย์" subject="Physics I, II" rating="4.8" reviews={27} price="35" bio="เคยเป็น TA ฟิสิกส์ 2 ปี" />
-        <TutorDetailCard name="พี่เต๋อ CS" subject="Python, Database" rating="4.9" reviews={41} price="40" bio="Software Engineer สอนเขียนโปรแกรมตั้งแต่เริ่มต้น" />
-        <TutorDetailCard name="พี่แนน เคมี" subject="Chemistry I" rating="4.7" reviews={19} price="20" bio="สอนเคมีให้เข้าใจง่าย เน้นสรุป" />
-        <TutorDetailCard name="พี่บอส กลศาสตร์" subject="Statics, Dynamics" rating="4.8" reviews={23} price="35" bio="จบวิศวะเครื่องกล สอนละเอียดมาก" />
-      </div>
-    </div>
-  );
-}
+            return (
+              <div key={tutor.id} className="glass-card p-6 flex flex-col gap-4 hover:bg-slate-800/80 transition-colors">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-full bg-indigo-500/20 border-2 border-indigo-500/50 shrink-0 flex items-center justify-center text-xl font-bold text-indigo-400">
+                    {initial}
+                  </div>
+                  <div className="flex-1 overflow-hidden">
+                    <h3 className="font-bold text-white text-lg truncate">{name}</h3>
+                    <div className="flex items-center gap-2 mt-1">
+                      <div className="flex items-center gap-1 text-yellow-400 text-sm font-bold">
+                        <Star className="w-3.5 h-3.5 fill-yellow-400" /> {tutor.rating || "5.0"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-function TutorDetailCard({ name, subject, rating, reviews, price, bio }: any) {
-  return (
-    <div className="glass-card p-6 flex flex-col gap-4 hover:bg-slate-800/80 transition-colors cursor-pointer group">
-      <div className="flex items-center gap-4">
-        <div className="w-16 h-16 rounded-full bg-indigo-500/20 border-2 border-indigo-500/50 shrink-0 flex items-center justify-center text-xl font-bold text-indigo-400">
-          {name.charAt(0)}
+                {/* Bio */}
+                <p className="text-sm text-slate-300 line-clamp-2">{tutor.bio || "ยังไม่ได้เขียนแนะนำตัว"}</p>
+
+                {/* Subjects */}
+                {subjectNames.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {subjectNames.map((s, i) => (
+                      <span key={i} className="bg-sky-500/10 text-sky-400 border border-sky-500/30 px-2.5 py-0.5 rounded-lg text-xs font-medium flex items-center gap-1">
+                        <BookOpen className="w-3 h-3" /> {s}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {/* Available Days */}
+                {availDays.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {availDays.map((d: string, i: number) => (
+                      <span key={i} className="bg-pink-500/10 text-pink-400 border border-pink-500/30 px-2.5 py-0.5 rounded-lg text-xs font-medium">
+                        {d}
+                      </span>
+                    ))}
+                    {tutor.time_start && tutor.time_end && (
+                      <span className="text-slate-400 text-xs flex items-center gap-1 ml-1">
+                        <Clock className="w-3 h-3" /> {tutor.time_start} - {tutor.time_end}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                {/* Footer */}
+                <div className="flex justify-between items-center border-t border-slate-700/50 pt-4 mt-auto">
+                  <div className="text-emerald-400 font-bold">
+                    {tutor.hourly_rate === 0 ? "ฟรี" : `${tutor.hourly_rate} เครดิต / ชม.`}
+                  </div>
+                  <Link 
+                    href={`/dashboard/tutors/book/${tutor.id}`}
+                    className="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-slate-900 font-bold px-4 py-2 rounded-xl text-sm transition-all flex items-center gap-1"
+                  >
+                    จองเวลา <ChevronRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
         </div>
-        <div className="flex-1 overflow-hidden">
-          <h3 className="font-bold text-white text-lg truncate">{name}</h3>
-          <p className="text-xs text-slate-400">{subject}</p>
-          <div className="flex items-center gap-2 mt-1">
-            <div className="flex items-center gap-1 text-yellow-400 text-sm font-bold">
-              <Star className="w-3.5 h-3.5 fill-yellow-400" /> {rating}
-            </div>
-            <span className="text-xs text-slate-500">({reviews} รีวิว)</span>
-          </div>
+      ) : (
+        <div className="glass-card p-10 text-center">
+          <Users className="w-12 h-12 text-slate-600 mx-auto mb-4" />
+          <h3 className="text-lg font-bold text-white mb-2">ยังไม่มีติวเตอร์ในระบบ</h3>
+          <p className="text-slate-400 text-sm mb-4">เป็นคนแรกที่สมัครเป็นติวเตอร์สิ!</p>
+          <Link href="/dashboard/tutors/apply" className="text-emerald-400 hover:text-emerald-300 font-bold">
+            สมัครเลย →
+          </Link>
         </div>
-      </div>
-
-      <p className="text-sm text-slate-300">{bio}</p>
-
-      <div className="flex justify-between items-center border-t border-slate-700/50 pt-4">
-        <div className="text-emerald-400 font-bold">{price} เครดิต / ชม.</div>
-        <button className="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-slate-900 font-bold px-4 py-2 rounded-xl text-sm transition-all flex items-center gap-1">
-          จองเวลา <ChevronRight className="w-4 h-4" />
-        </button>
-      </div>
+      )}
     </div>
   );
 }

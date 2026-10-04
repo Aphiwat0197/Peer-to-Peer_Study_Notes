@@ -51,8 +51,17 @@ export default function RegisterPage() {
 
       if (signUpError) throw signUpError;
 
+      // Fallback: สร้าง/อัปเดต profile row ด้วยตัวเองเผื่อ trigger ไม่ทำงาน
+      if (data.user) {
+        await supabase.from("profiles").upsert({
+          id: data.user.id,
+          full_name: formData.name,
+          faculty_id: formData.faculty || null,
+        }, { onConflict: 'id' });
+      }
+
       // สมัครสำเร็จ
-      setSuccess("สมัครสมาชิกสำเร็จ! กำลังพาดึงเข้าสู่ระบบ...");
+      setSuccess("สมัครสมาชิกสำเร็จ! กำลังพาเข้าสู่ระบบ...");
       
       // หน่วงเวลา 1.5 วินาทีแล้วพาไปหน้า Dashboard
       setTimeout(() => {
@@ -119,10 +128,10 @@ export default function RegisterPage() {
               <BookOpen className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
               <select name="faculty" value={formData.faculty} onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 text-slate-300 rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:border-emerald-500 transition-colors appearance-none">
                 <option value="">เลือกคณะของคุณ...</option>
-                <option value="eng">วิศวกรรมศาสตร์</option>
-                <option value="sci">วิทยาศาสตร์ประยุกต์</option>
-                <option value="ind">ครุศาสตร์อุตสาหกรรม</option>
-                <option value="cit">วิทยาลัยเทคโนโลยีอุตสาหกรรม</option>
+                <option value="11111111-1111-1111-1111-111111111111">วิศวกรรมศาสตร์</option>
+                <option value="22222222-2222-2222-2222-222222222222">วิทยาศาสตร์ประยุกต์</option>
+                <option value="33333333-3333-3333-3333-333333333333">ครุศาสตร์อุตสาหกรรม</option>
+                <option value="44444444-4444-4444-4444-444444444444">วิทยาลัยเทคโนโลยีอุตสาหกรรม</option>
               </select>
             </div>
           </div>
