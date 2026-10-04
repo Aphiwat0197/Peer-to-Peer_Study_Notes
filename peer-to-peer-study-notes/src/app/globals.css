@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  /* กำหนดให้ใช้ Font Prompt เป็นหลัก */
+  --font-sans: var(--font-prompt), ui-sans-serif, system-ui, sans-serif;
+  
+  /* ธีมสี Dark 70% (เน้นไปที่ Slate/Charcoal เข้มๆ ให้อารมณ์ Modern/Professional) */
+  --color-background: #0f172a; 
+  --color-foreground: #f8fafc;
+  
+  /* ธีมสี White 30% สำหรับการ์ดหรือส่วนที่ต้องการความสว่าง (Contrast) */
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a;
+  
+  /* โทนสีเขียว (Primary Theme) ตามที่ระบุ */
+  --color-primary: #10b981; /* Emerald 500 */
+  --color-primary-foreground: #ffffff;
+  
+  /* Accent Colors แนว Pastel / Pixar-inspired / Kawaii */
+  --color-accent-blue: #7dd3fc;
+  --color-accent-pink: #f9a8d4;
+  --color-accent-yellow: #fde047;
+  
+  /* รัศมีความโค้ง (Rounded Shapes) ให้อารมณ์น่ารัก เป็นมิตรแบบ Kawaii */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+}
+
+:root {
+  --background: #0f172a; /* Slate 900 */
+  --foreground: #f8fafc; /* Slate 50 */
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Utilities สำหรับ Grid System และ Component Styles */
+@layer utilities {
+  .glass-card {
+    background: rgba(30, 41, 59, 0.7); /* slate-800 with opacity */
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-xl);
+  }
+  
+  .white-card {
+    background: var(--color-card);
+    color: var(--color-card-foreground);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
+}
