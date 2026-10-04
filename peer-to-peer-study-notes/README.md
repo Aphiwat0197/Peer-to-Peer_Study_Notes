@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📚 Note TCT (Peer-to-Peer Study Notes)
 
-## Getting Started
+แพลตฟอร์มแชร์ชีทสรุปและระบบติวเตอร์เพื่อนช่วยเพื่อน สำหรับนักศึกษา (ออกแบบเพื่อ KMUTNB) เน้นการแบ่งปันความรู้ สะสมแต้ม และสร้างรายได้พิเศษผ่านระบบเครดิต
 
-First, run the development server:
+---
 
+## 🛠️ Tech Stack
+* **Framework:** Next.js (App Router)
+* **Language:** TypeScript
+* **Styling:** Tailwind CSS v4 + shadcn/ui
+* **Icons:** Lucide React
+* **Font:** Prompt (Google Fonts)
+* **Backend & Database:** Supabase (PostgreSQL, Auth, Storage)
+
+---
+
+## 🚀 Workflow การรันโปรเจกต์ (Getting Started)
+
+### 1. การติดตั้ง (Installation)
+ตรวจสอบให้แน่ใจว่าเครื่องของคุณมี **Node.js (v22+)** ติดตั้งอยู่
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# เข้าสู่โฟลเดอร์โปรเจกต์
+cd peer-to-peer-study-notes
+
+# ติดตั้ง Dependencies
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. การตั้งค่า Environment (Environment Variables)
+สร้างไฟล์ `.env.local` ในโฟลเดอร์รันโปรเจกต์ และใส่ค่าของ Supabase Project ของคุณ:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. การรันเซิร์ฟเวอร์จำลอง (Development)
+```bash
+npm run dev
+```
+เปิดเบราว์เซอร์และเข้าไปที่ [http://localhost:3000](http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🎨 Design System & UI Standards
+โปรเจกต์นี้ถูกออกแบบภายใต้ข้อกำหนด (Constraints) ดังนี้:
 
-To learn more about Next.js, take a look at the following resources:
+* **Theme Color:** Dark 70% (`slate-900`) / White 30% (`white-card`) / Primary Accent เป็นสีเขียว (`emerald-500`)
+* **Vibe:** ทันสมัย, Pixar-inspired, Kawaii, มุมโค้งมน (Rounded shapes)
+* **6 หลักการออกแบบที่บังคับใช้:**
+  1. **Grid System:** ใช้ Tailwind Grid (`grid-cols-1 md:grid-cols-3`) เพื่อความมีระเบียบและ Responsive
+  2. **Visual Hierarchy:** ลำดับความสำคัญด้วยขนาด Font และสี (เช่น ชื่อวิชาใหญ่กว่าชื่อคนเขียน)
+  3. **Proximity:** จัดกลุ่มข้อมูลที่เกี่ยวข้องกันไว้ใกล้กัน (เช่น ดาวเรตติ้งอยู่ติดกับตัวเลขคะแนน)
+  4. **Alignment:** จัดวางแนวข้อความและองค์ประกอบให้ตรงกัน
+  5. **Repetition:** ใช้ Component ซ้ำๆ เช่น `<NoteCard />` หรือ `<TutorCard />` เพื่อให้หน้าตาเป็นมาตรฐาน
+  6. **Contrast:** ใช้พื้นหลังสีเข้ม ตัดกับการ์ดสีขาว และปุ่มสีเขียว เพื่อเน้นจุด Call to Action
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🗄️ Database & Domain Workflow
+อ้างอิงจาก `GLOSSARY.md` และการตัดสินใจในรอบ Grilling Session:
 
-## Deploy on Vercel
+1. **User & Tutor:** ใช้บัญชีผู้ใช้เดียวกัน (Single Account) โดยผู้ใช้สามารถเปิดโหมด "Tutor Profile" ได้หากต้องการสอน
+2. **ระบบเศรษฐกิจ (Points vs Credits):**
+   * **Points (แต้ม):** ได้จากการทำกิจกรรม (ล็อกอิน, อัปโหลดชีท) ใช้เพื่ออัปเลเวลและรับเหรียญตรา (Gamification)
+   * **Credits (เครดิต):** ได้จากการขายชีท, รับติว, หรือเติมเงิน ใช้สำหรับซื้อชีทหรือจองติวเตอร์ (ห้ามนำแต้มมาแลกเครดิต)
+3. **การเข้าถึงชีท (Note Access):** เมื่อใช้เครดิตซื้อแล้ว ผู้ใช้สามารถดาวน์โหลดเป็นไฟล์ PDF ลงเครื่องได้เลย (ลดความซับซ้อนของการทำ In-app viewer)
+4. **การติว (Tutoring Session):** แพลตฟอร์มจะจัดการแค่เรื่องการจอง (Booking) และตัดเครดิต ส่วนการสอนจริงให้ติวเตอร์แปะลิงก์ภายนอก เช่น Google Meet หรือ MS Teams
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📂 โครงสร้างโฟลเดอร์หลัก (Folder Structure)
+```
+peer-to-peer-study-notes/
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx         # โครงสร้าง Layout หลัก + Font Prompt
+│   │   ├── globals.css        # ตั้งค่า Design Tokens (สี, ความโค้ง)
+│   │   ├── page.tsx           # หน้า Landing Page
+│   │   └── dashboard/         # หน้าสำหรับผู้ใช้งานที่ล็อกอินแล้ว
+│   └── components/            # UI Components ที่ใช้ซ้ำ (Cards, Buttons)
+├── supabase/
+│   └── migrations/            # SQL Scripts สำหรับสร้าง Database Schema
+└── README.md                  # เอกสารนี้
+```
