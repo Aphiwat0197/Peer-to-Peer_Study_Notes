@@ -1,5 +1,6 @@
-import { User, Mail, BookOpen, Award, Coins, Edit, ShieldCheck } from "lucide-react";
+import { User, Mail, BookOpen, Award, Coins, ShieldCheck } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
+import EditProfileModal from "@/components/EditProfileModal";
 
 export default async function ProfilePage() {
   const supabase = await createClient();
@@ -69,9 +70,7 @@ export default async function ProfilePage() {
       <section className="glass-card p-6 md:p-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-white">ข้อมูลส่วนตัว</h2>
-          <button className="text-emerald-400 hover:text-emerald-300 flex items-center gap-1 text-sm font-medium">
-            <Edit className="w-4 h-4" /> แก้ไข
-          </button>
+          <EditProfileModal userId={user!.id} currentName={fullName} />
         </div>
 
         <div className="space-y-5">
