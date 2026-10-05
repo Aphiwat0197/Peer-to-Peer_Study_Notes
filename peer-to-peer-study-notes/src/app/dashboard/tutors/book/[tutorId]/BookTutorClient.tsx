@@ -74,6 +74,20 @@ export default function BookTutorClient({
         <CheckCircle className="w-16 h-16 text-emerald-400 mb-4" />
         <h2 className="text-2xl font-bold text-white mb-2">จองเวลาสำเร็จ!</h2>
         <p className="text-slate-400 mb-6">รอ {tutorName} ยืนยันนัดหมาย จากนั้นจะส่งลิงก์ให้คุณทางแชท</p>
+        <div className="flex gap-3">
+          <Link
+            href="/dashboard/chat"
+            className="bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold px-6 py-3 rounded-xl transition-all shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)]"
+          >
+            แชทกับอาจารย์
+          </Link>
+          <Link
+            href="/dashboard/tutors"
+            className="bg-slate-800 hover:bg-slate-700 text-white font-medium px-6 py-3 rounded-xl transition-all border border-slate-700"
+          >
+            กลับไปหาติวเตอร์
+          </Link>
+        </div>
       </div>
     );
   }
