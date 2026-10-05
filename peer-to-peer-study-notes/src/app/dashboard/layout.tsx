@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Home, BookOpen, Users, MessageSquare, User, Bell } from "lucide-react";
+import { Home, BookOpen, Users, MessageSquare, User, Bell, UsersRound } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import LogoutButton from "@/components/LogoutButton";
 
@@ -43,6 +43,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <NavItem href="/dashboard" icon={<Home className="w-5 h-5" />} label="หน้าหลัก" />
           <NavItem href="/dashboard/notes" icon={<BookOpen className="w-5 h-5" />} label="ชีทสรุปของฉัน" />
           <NavItem href="/dashboard/tutors" icon={<Users className="w-5 h-5" />} label="นัดหมายติว" />
+          <NavItem href="/dashboard/groups" icon={<UsersRound className="w-5 h-5" />} label="กลุ่มติว" />
           <NavItem href="/dashboard/chat" icon={<MessageSquare className="w-5 h-5" />} label="แชท" />
           <NavItem href="/dashboard/profile" icon={<User className="w-5 h-5" />} label="โปรไฟล์" />
         </nav>
@@ -77,6 +78,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <MobileNavItem href="/dashboard" icon={<Home className="w-6 h-6" />} label="หลัก" />
         <MobileNavItem href="/dashboard/notes" icon={<BookOpen className="w-6 h-6" />} label="ชีทสรุป" />
         <MobileNavItem href="/dashboard/tutors" icon={<Users className="w-6 h-6" />} label="ติวเตอร์" />
+        <MobileNavItem href="/dashboard/groups" icon={<UsersRound className="w-6 h-6" />} label="กลุ่มติว" />
         <MobileNavItem href="/dashboard/chat" icon={<MessageSquare className="w-6 h-6" />} label="แชท" />
         <MobileNavItem href="/dashboard/profile" icon={<User className="w-6 h-6" />} label="โปรไฟล์" />
       </nav>
