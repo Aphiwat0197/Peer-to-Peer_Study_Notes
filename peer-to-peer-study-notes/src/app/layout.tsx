@@ -42,17 +42,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <div className="container mx-auto h-16 px-4 flex items-center justify-between">
             <Link href="/" className="text-2xl font-bold text-emerald-400">Note TCT</Link>
 
-            {/* Right Side: Profile or Login Button */}
-            {user ? (
-              <Link href="/dashboard/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <div className="hidden md:block text-sm text-right">
-                  <div className="text-white font-bold">{fullName}</div>
-                </div>
-                <div className="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center font-bold text-slate-900 shrink-0 shadow-lg">
-                  {initial}
-                </div>
-              </Link>
-            ) : (
+            {/* Right Side: Login Button only when logged out */}
+            {!user && (
               <Link href="/login" className="bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold px-4 py-2 rounded-xl transition-all">
                 เข้าสู่ระบบ
               </Link>
